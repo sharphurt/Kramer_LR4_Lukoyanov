@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixMath_LR4_Lukoyanov", "MatrixMath_LR4_Lukoyanov\MatrixMath_LR4_Lukoyanov.csproj", "{61462926-808A-4085-B42C-D0B9725C3BDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixMathTest", "MatrixMathTest\MatrixMathTest.csproj", "{7E0B72F7-AE34-4135-9DA6-72ADDA7E44B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61462926-808A-4085-B42C-D0B9725C3BDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61462926-808A-4085-B42C-D0B9725C3BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61462926-808A-4085-B42C-D0B9725C3BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61462926-808A-4085-B42C-D0B9725C3BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E0B72F7-AE34-4135-9DA6-72ADDA7E44B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0B72F7-AE34-4135-9DA6-72ADDA7E44B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0B72F7-AE34-4135-9DA6-72ADDA7E44B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0B72F7-AE34-4135-9DA6-72ADDA7E44B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
