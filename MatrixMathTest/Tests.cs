@@ -8,6 +8,15 @@ namespace MatrixMathTest
     [TestFixture]
     public class Tests
     {
+        [Test]
+        public void CreateMatrixTest()
+        {
+            Assert.Throws(typeof(ArgumentException), () => new Matrix(new double[,] { }));
+            Assert.Throws(typeof(ArgumentException), () => new Matrix(null));
+            var elements = new double[,] {{1, 2, 3}, {5, 6, 7}};
+            Assert.AreEqual(elements, new Matrix(elements).Elements);
+        }
+
         [TestCase("1 2 3 9 8 7 4 5 6", 0)]
         [TestCase("2 10 8 2", -76)]
         [TestCase("4 6 10 7 1 4 9 8 10 2 10 7 10 7 6 10 3 6 1 10 10 7 1 8 3", 52)]
@@ -16,7 +25,7 @@ namespace MatrixMathTest
         public void DeterminantTest(string matrix, double det)
         {
             var determinant = Utils.ArrayToSquareMatrix(matrix.Split(' ').Select(double.Parse).ToArray())
-                .Determinant();
+                .Determinant;
             Assert.AreEqual(determinant, det);
         }
 
@@ -112,26 +121,87 @@ namespace MatrixMathTest
         }
 
         [Test]
-        public void KramerTest1()
+        public void InverseTest3()
+        {
+            var matrix = new Matrix(new double[,] {{1, 2}, {3, 6}});
+            Assert.Throws(typeof(ArgumentException), () => matrix.Inverse());
+        }
+
+        [Test]
+        public void KramerSolverTest1()
         {
             var matrix = new Matrix(new double[,] {{21, 82, 1}, {47, 19, 37}, {8, 91, 12}});
             var vector = new Vector(new double[] {81, 3, 54});
             var result = new Vector(new double[] {-94128, -60396, 143790}).ElementwiseOperation(e => e / -83770.0);
 
-            var (kramerResult, answer) = matrix.KramerSolve(vector);
-            Assert.AreEqual(kramerResult, KramerResult.Single);
+            var (kramerResult, answer) = new KramerSolver().Solve(matrix, vector);
+            Assert.AreEqual(kramerResult, LinearSystemSolveResult.Single);
             Assert.AreEqual(answer, result);
         }
-        
+
         [Test]
-        public void KramerTest2()
+        public void KramerSolverTest2()
         {
             var matrix = new Matrix(new double[,] {{1, 2}, {3, 6}});
             var vector = new Vector(new double[] {8, 12});
-           
-            var cramelSolve = matrix.KramerSolve(vector);
-            Assert.AreEqual(cramelSolve.result, KramerResult.InfinityOrAbsence);
-            Assert.AreEqual(cramelSolve.vector, new Vector(0));
+
+            var (result, answer) = new KramerSolver().Solve(matrix, vector);
+            Assert.AreEqual(result, LinearSystemSolveResult.InfinityOrAbsence);
+            Assert.AreEqual(answer, new Vector(0));
+        }
+
+        [Test]
+        public void MatrixToVectorConversion()
+        {
+            var matrix = new Matrix(new double[,] {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+            Assert.Throws(typeof(InvalidOperationException), () => matrix.ToVector());
+        }
+
+        [Test]
+        public void MatrixToVectorConversion1()
+        {
+            var matrix = new Matrix(new double[,] {{1}, {2}, {3}, {4}, {5}}).ToVector();
+            var vector = new Vector(new double[] {1, 2, 3, 4, 5});
+            Assert.AreEqual(vector, matrix);
+        }
+
+        [Test]
+        public void MatrixToVectorConversion2()
+        {
+            var matrix = new Matrix(new double[,] {{1, 2, 3, 4, 5}}).ToVector();
+            var vector = new Vector(new double[] {1, 2, 3, 4, 5});
+            Assert.AreEqual(vector, matrix);
+        }
+
+        [Test]
+        public void InverseSolverTest1()
+        {
+            var matrix = new Matrix(new double[,] {{21, 82, 1}, {47, 19, 37}, {8, 91, 12}});
+            var vector = new Vector(new double[] {81, 3, 54});
+            var result = new Vector(new double[] {-94128, -60396, 143790}).ElementwiseOperation(e => e / -83770.0);
+
+            var (kramerResult, answer) = new InverseMatrixSolver().Solve(matrix, vector);
+            Assert.AreEqual(kramerResult, LinearSystemSolveResult.Single);
+            Assert.AreEqual(answer, result);
+        }
+
+        [Test]
+        public void InverseSolverTest2()
+        {
+            var matrix = new Matrix(new double[,] {{1, 2}, {3, 6}});
+            var vector = new Vector(new double[] {8, 12});
+
+            var (result, answer) = new InverseMatrixSolver().Solve(matrix, vector);
+            Assert.AreEqual(result, LinearSystemSolveResult.InfinityOrAbsence);
+            Assert.AreEqual(answer, new Vector(0));
+        }
+
+        [Test]
+        public void VectorToVerticalMatrixTest()
+        {
+            var vector = new Vector(new double[] {1, 2, 3, 4, 5});
+            var matrix = new Matrix(new double[,] {{1}, {2}, {3}, {4}, {5}});
+            Assert.AreEqual(matrix, vector.ToVerticalMatrix());
         }
     }
 }

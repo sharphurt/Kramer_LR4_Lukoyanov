@@ -5,37 +5,6 @@ namespace MatrixMath_LR4_Lukoyanov
 {
     public partial class Matrix
     {
-        public (KramerResult result, Vector vector) KramerSolve(Vector vector)
-        {
-            var det = Determinant();
-            if (Math.Abs(det) < 1e-9)
-                return (KramerResult.InfinityOrAbsence, new Vector(0));
-
-            var vectorLength = vector.Length;
-
-            var dets = new Vector(vectorLength);
-            var el = new Vector(vectorLength);
-            for (var j = 0; j < vectorLength; j++)
-            {
-                for (var i = 0; i < vectorLength; i++)
-                {
-                    el[i] = this[i, j];
-                    this[i, j] = vector[i];
-                }
-
-                dets[j] = Determinant();
-                for (var i = 0; i < vectorLength; i++)
-                    this[i, j] = el[i];
-            }
-
-            var results = new Vector(vectorLength);
-            for (var i = 0; i < vectorLength; i++)
-                results[i] = dets[i] / det;
-
-            return (KramerResult.Single, results);
-        }
-
-
         private Matrix RowCoFactor(int row)
         {
             var size = RowCount;
@@ -56,22 +25,24 @@ namespace MatrixMath_LR4_Lukoyanov
             return subMatrix;
         }
 
-        public double Determinant()
+        public double Determinant
         {
-            var size = RowCount;
-            if (size == 1) return this[0, 0];
-            if (size == 2) return this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0];
+            get {
+                var size = RowCount;
+                if (size == 1) return this[0, 0];
+                if (size == 2) return this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0];
 
-            double determinant = 0;
-            var sign = 1;
-            for (var k = 0; k < size; ++k)
-            {
-                var mat0 = RowCoFactor(k);
-                determinant += sign * this[k, 0] * mat0.Determinant();
-                sign *= -1;
+                double determinant = 0;
+                var sign = 1;
+                for (var k = 0; k < size; ++k)
+                {
+                    var mat0 = RowCoFactor(k);
+                    determinant += sign * this[k, 0] * mat0.Determinant;
+                    sign *= -1;
+                }
+
+                return determinant;
             }
-
-            return determinant;
         }
 
         private static Matrix Multiply(Matrix matrix, Matrix other)
@@ -94,8 +65,8 @@ namespace MatrixMath_LR4_Lukoyanov
             return result;
         }
 
-        private static Matrix Multiply(Matrix matrix, Vector vector) =>
-            Multiply(matrix, new Matrix(vector.Length, 1, vector.Elements));
+        public Matrix Multiply(Vector vector) =>
+            Multiply(this, new Matrix(vector.Length, 1, vector.Elements));
 
 
         public static Matrix operator *(Matrix matrix, Matrix other) => Multiply(matrix, other);
@@ -107,7 +78,7 @@ namespace MatrixMath_LR4_Lukoyanov
                     "Обратная матрица существует только для квадратных, невырожденных, матриц.");
 
             var matrix = new Matrix(RowCount, ColumnCount);
-            var determinant = Determinant();
+            var determinant = Determinant;
 
             if (Math.Abs(determinant) < 1e-9)
                 throw new ArgumentException(
@@ -119,7 +90,7 @@ namespace MatrixMath_LR4_Lukoyanov
             for (var t = 0; t < ColumnCount; t++)
             {
                 var tmp = Exclude(i, t);
-                matrix[t, i] = sign / determinant * tmp.Determinant();
+                matrix[t, i] = sign / determinant * tmp.Determinant;
                 sign *= -1;
             }
 

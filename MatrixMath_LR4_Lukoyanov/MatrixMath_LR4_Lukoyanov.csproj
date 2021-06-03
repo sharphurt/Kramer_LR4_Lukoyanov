@@ -38,7 +38,10 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Matrix\KramerResult.cs" />
+        <Compile Include="ILinearSystemSolver.cs" />
+        <Compile Include="InverseMatrixSolver.cs" />
+        <Compile Include="KramerSolver.cs" />
+        <Compile Include="Matrix\LinearSystemSolveResult.cs" />
         <Compile Include="Matrix\Matrix.cs" />
         <Compile Include="Matrix\MatrixComparison.cs" />
         <Compile Include="Matrix\MatrixMath.cs" />

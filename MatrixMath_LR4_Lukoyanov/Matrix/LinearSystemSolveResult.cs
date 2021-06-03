@@ -1,6 +1,6 @@
 ﻿namespace MatrixMath_LR4_Lukoyanov
 {
-    public enum KramerResult
+    public enum LinearSystemSolveResult
     {
         InfinityOrAbsence,
         Single, 

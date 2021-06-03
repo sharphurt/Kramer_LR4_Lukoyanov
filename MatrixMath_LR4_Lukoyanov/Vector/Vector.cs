@@ -15,5 +15,8 @@
             get => Elements[index];
             set => Elements[index] = value;
         }
+
+        public Matrix ToVerticalMatrix() => new Matrix(Length, 1, Elements);
+        
     }
 }
